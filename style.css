@@ -1,0 +1,160 @@
+:root {
+    /* Color Palette for accents */
+    --clr-red: #7f1d1d; 
+    --clr-purple: #4c1d95; 
+    --clr-text: #e5e7eb; /* Soft white/ash for dark mode */
+    --clr-paper: rgba(10, 10, 10, 0.7); /* Glass-like dark background for the letter */
+    --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body, html {
+    height: 100%;
+    font-family: 'Georgia', serif; /* Classic, intimate feel */
+    color: var(--clr-text);
+    overflow: hidden; /* Prevents scrolling during animations */
+}
+
+/* STAGE 1: INTRO SCREEN */
+#intro-screen {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100vh;
+    display: flex; justify-content: center; align-items: center;
+    
+    /* Deep, warm gradient overlaying your background image */
+    background-image: linear-gradient(rgba(20, 15, 10, 0.7), rgba(20, 15, 10, 0.9)), url('IMAGE/bb.jpg');
+    background-size: cover;
+    background-position: center;
+    
+    transition: opacity 1.5s var(--ease-standard);
+    z-index: 20;
+}
+
+.intro-message { 
+    text-align: center; 
+    max-width: 400px; 
+    padding: 2rem; 
+}
+
+.greeting { 
+    font-size: 2rem; 
+    font-style: italic; 
+    color: #e5e7eb; 
+    opacity: 0.9; 
+    margin-bottom: 0.5rem; 
+}
+
+.announcement { 
+    font-size: 1.1rem; 
+    color: #d4a373; /* Warm golden tone */
+    margin-bottom: 2.5rem; 
+    letter-spacing: 1px; 
+}
+
+.action-text {
+    font-size: 0.9rem; 
+    letter-spacing: 1px;
+    text-transform: uppercase; 
+    color: #a1a1aa; /* Softer grey */
+    cursor: pointer; 
+    transition: color 0.3s ease, letter-spacing 0.3s ease;
+}
+
+.action-text:hover { 
+    color: #fdfaf6; 
+    letter-spacing: 2px; 
+}
+
+/* STAGE 2: MAIN SCREEN */
+#main-content-screen {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100vh;
+    z-index: 10;
+    opacity: 0; /* Starts invisible */
+    transition: opacity 2s var(--ease-standard);
+}
+
+/* BACKGROUND IMAGE HANDLER */
+.background-canvas {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: #101010; 
+    background-image: url('IMAGE/bb.jpg');
+    background-size: cover;
+    background-position: center;
+    
+    /* Dynamic blur */
+    filter: blur(10px);
+    transform: scale(1.1); /* Prevents blurred edges from showing */
+    z-index: 1;
+    transition: filter 1s var(--ease-standard);
+}
+
+.readability-overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.4); /* Darkens the blurred background slightly for contrast */
+    z-index: 2;
+}
+
+.main-stage-container {
+    position: relative; z-index: 3;
+    height: 100%; display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    perspective: 1500px; /* Crucial for 3D depth */
+    gap: 3rem; /* Spacing between bouquet and letter */
+}
+
+/* THE 3D BOUQUET CANVAS */
+.bouquet-3d-scene {
+    position: relative; width: 300px; height: 350px;
+    transform-style: preserve-3d; 
+    animation: gentle-float 8s ease-in-out infinite;
+}
+
+/* Max depth (base) */
+.bouquet-base {
+    width: 100%; height: 100%; object-fit: contain; /* Changed to contain so a transparent PNG isn't distorted */
+    filter: drop-shadow(0 15px 25px rgba(0,0,0,0.6)); /* Softer, wider shadow for realism */
+    transform: translateZ(-20px); 
+}
+
+/* THE PERSONAL LETTER */
+#personal-letter-wrapper {
+    width: 90%; max-width: 500px;
+    transition: opacity 1.5s var(--ease-standard), transform 1.5s var(--ease-standard);
+    z-index: 10;
+    
+    /* Positions the letter with depth */
+    transform: translateY(20px) translateZ(60px); 
+    opacity: 0; /* Hides letter until bouquet floats to place */
+}
+
+.letter-paper {
+    background-color: var(--clr-paper);
+    padding: 3rem;
+    border-radius: 4px;
+    border: 1px solid rgba(255,255,255,0.05);
+    backdrop-filter: blur(15px); /* Glassmorphism effect */
+    box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+}
+
+.letter-content { 
+    line-height: 2; 
+    font-size: 1.1rem; 
+    color: #d8d8d8; 
+}
+
+/* UTILITY & STATE CLASSES */
+.active-stage { z-index: 30 !important; }
+.hidden { display: none !important; }
+.visible-element { opacity: 1 !important; transform: translateY(0) translateZ(60px) !important; }
+
+/* KEYFRAME ANIMATIONS */
+@keyframes gentle-float {
+    0%, 100% { transform: translateY(0) rotate(-1deg); }
+    50% { transform: translateY(-15px) rotate(1deg); }
+}
